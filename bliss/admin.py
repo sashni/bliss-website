@@ -73,6 +73,7 @@ def list():
     orderform = getOrder()
     womens = Product.query.filter_by(gender='womens').order_by('category').all()
     mens = Product.query.filter_by(gender='mens').order_by('category').all()
+    unisex = Product.query.filter_by(gender='unisex').order_by('category').all()
     addform.category.choices = [(addform.category.data, addform.category.data)]
     orders = []
 
@@ -110,7 +111,7 @@ def list():
           else:
             return(url_for('admin.order', order_id=customer_email))
 
-    return render_template('admin.html', womens=womens, mens=mens, addform=addform, orderform=orderform, orders=orders)
+    return render_template('admin.html', womens=womens, mens=mens, unisex=unisex, addform=addform, orderform=orderform, orders=orders)
 
 @bp.route('/admin/order/<order_id>', methods=['GET', 'POST'])
 @login_required

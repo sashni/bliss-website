@@ -25,7 +25,6 @@
 
 <!-- Table of Products -->
 <div class="container">
-  <h4>Womens</h4>
   <table class="table">
     <thead>
     <tr>
@@ -39,6 +38,9 @@
     </tr>
     </thead>
     <tbody>
+    <tr>
+      <th scope="row"><h4>Womens</h4></th>
+    </tr>
     {% for product in womens%}
       <tr>
         <th scope="row">{{product.product_id}}</th>
@@ -46,7 +48,7 @@
         <td>
            <img src="data:image/jpeg;base64,{{ product.img | safe }}" class="img-thumbnail" style="height: 50px; width: 50px" alt="Image unavailable">
         </td>
-        <td>{{product.category[0].upper() + product.category[1:]}}</td>
+        <td>{{product.category.capitalize()}}</td>
         <td>{{product.price}} KSh</td>
         <td>
           {% if product.active %}
@@ -62,52 +64,63 @@
         </td>
       </tr>
     {% endfor %}
+
+    <tr>
+      <th scope="row"><h4>Mens</h4></th>
+    </tr>
+    {% for product in mens%}
+    <tr>
+      <th scope="row">{{product.product_id}}</th>
+      <td>{{product.name}}</td>
+      <td>
+         <img src="data:image/jpeg;base64,{{ product.img | safe }}" class="img-thumbnail" style="height: 50px; width: 50px" alt="Image unavailable">
+      </td>
+      <td>{{product.category.capitalize()}}</td>
+      <td>{{product.price}} KSh</td>
+      <td>
+        {% if product.active %}
+          <p style="color: #117700; font-size:1rem; letter-spacing: 0.5px">in stock</p>
+        {% else %}
+          <p style="color:#117700; font-size: 1rem; letter-spacing: 0.5px">out of stock</p>
+        {% endif %}
+      </td>
+      <td>
+        <a class="nav-link" href="{{ url_for('admin.delete', pid=product.product_id) }}">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M3 6l3 18h12l3-18h-18zm19-4v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.316c0 .901.73 2 1.631 2h5.711z"/></svg>
+        </a>
+      </td>
+    </tr>
+    {% endfor %}
+
+    <tr>
+      <th scope="row"><h4>Unisex</h4></th>
+    </tr>
+    {% for product in unisex%}
+    <tr>
+      <th scope="row">{{product.product_id}}</th>
+      <td>{{product.name}}</td>
+      <td>
+         <img src="data:image/jpeg;base64,{{ product.img | safe }}" class="img-thumbnail" style="height: 50px; width: 50px" alt="Image unavailable">
+      </td>
+      <td>{{product.category.capitalize()}}</td>
+      <td>{{product.price}} KSh</td>
+      <td>
+        {% if product.active %}
+          <p style="color: #117700; font-size:1rem; letter-spacing: 0.5px">in stock</p>
+        {% else %}
+          <p style="color:#117700; font-size: 1rem; letter-spacing: 0.5px">out of stock</p>
+        {% endif %}
+      </td>
+      <td>
+        <a class="nav-link" href="{{ url_for('admin.delete', pid=product.product_id) }}">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M3 6l3 18h12l3-18h-18zm19-4v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.316c0 .901.73 2 1.631 2h5.711z"/></svg>
+        </a>
+      </td>
+    </tr>
+    {% endfor %}
     </tbody>
   </table>
 </div>
-
-<br><br><br>
-<div class="container">
-  <h4>Mens</h4>
-  <table class="table">
-    <thead>
-    <tr>
-      <th scope="col">Product ID</th>
-      <th scope="col">Name</th>
-      <th scope="col">Image</th>
-      <th scope="col">Category</th>
-      <th scope="col">Price</th>
-      <th scope="col">Availability</th>
-      <th scope="col"></th>
-    </tr>
-    </thead>
-    <tbody>
-      {% for product in mens%}
-      <tr>
-        <th scope="row">{{product.product_id}}</th>
-        <td>{{product.name}}</td>
-        <td>
-           <img src="data:image/jpeg;base64,{{ product.img | safe }}" class="img-thumbnail" style="height: 50px; width: 50px" alt="Image unavailable">
-        </td>
-        <td>{{product.category}}</td>
-        <td>{{product.price}} KSh</td>
-        <td>
-          {% if product.active %}
-            <p style="color: #117700; font-size:1rem; letter-spacing: 0.5px">in stock</p>
-          {% else %}
-            <p style="color:#117700; font-size: 1rem; letter-spacing: 0.5px">out of stock</p>
-          {% endif %}
-        </td>
-        <td>
-          <a class="nav-link" href="{{ url_for('admin.delete', pid=product.product_id) }}">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M3 6l3 18h12l3-18h-18zm19-4v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.316c0 .901.73 2 1.631 2h5.711z"/></svg>
-          </a>
-        </td>
-      </tr>
-      {% endfor %}
-      </tbody>
-    </table>
-  </div>
 </form>
 
 <!-- Add Product Form -->
@@ -168,6 +181,14 @@
                   }
                 })
               });
+            };
+
+            category_select.onchange = () => {
+              if (category_select.value === 'other') {
+                other_category.type="text";
+              } else {
+                other_category.type = "hidden";
+              }
             };
           </script>
         </div>
