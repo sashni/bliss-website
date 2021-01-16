@@ -7,9 +7,9 @@ Application Features include:
 
 Run Instructions:
 - install requirements
-`export FLASK_APP=bliss`
-- (export FLASK_APP=development)
-- flask db init
-- flask db migrate -m "migration message"
-- flask db upgrade
-- flask run
+- `export FLASK_APP=bliss`
+- `(export FLASK_APP=development)`
+- `flask db init`
+- `flask db migrate -m "migration message"`
+- `flask db upgrade`
+- ``flask run``
