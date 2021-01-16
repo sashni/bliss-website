@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+    {% if admin == 'True' %}
+    <a class="btn btn-link" href="{{url_for('admin.list')}}"
+       style="text-decoration: none; color: #000000; font-family: 'LL Brown Light Web', Helvetica, sans-serif; text-transform: lowercase; font-weight: 400; font-size: 1.5em; letter-spacing: 0.12em; padding-top: 0">
+        Back
+    </a>
+    {% else %}
+    <a class="btn btn-link" href="{{url_for('store.products', g=product.gender, c=product.category)}}"
+        style="text-decoration: none; color: #000000; font-family: 'LL Brown Light Web', Helvetica, sans-serif; text-transform: lowercase; font-weight: 400; font-size: 1.5em; letter-spacing: 0.12em; padding-top: 0">
+    Back
+    </a>
+    {% endif %}
+    <div class="row">
+
+            <div class="media" style="padding-left: 2vw; padding-top: 2vw">
+                <img src="data:image/jpeg;base64,{{ product.img_path | safe }}" class="align-self-center mr-3" style="height: 25vw" alt="...">
+                <div class="media-body" style="padding-left: 3vw">
+                    <p style="letter-spacing: 0.5px">{{product.gender}} <span>&#8729;</span> {{product.category}} <span>&#8729;</span> {{product.type}}</p><br>
+                    <h2 class="mt-0" style="letter-spacing: 0.5px">{{product.name}}</h2>
+                    <p style="letter-spacing: 0.5px; font-size: 20px">{{product.price}} KSh/item</p>
+                    {% if product.active %}
+                    <p style="color: #117700; font-size:1rem; letter-spacing: 0.5px">in stock - place order now</p>
+                    {% else %}
+                    <p style="color:#117700; font-size: 1rem; letter-spacing: 0.5px">out of stock - order may take longer</p>
+                    {% endif %}
+
+                    <p>{{product.desc}}</p><br>
+                    {% if admin == 'True' %}
+                    <!-- TODO: change url path -->
+                    <a class="btn btn-link" href="{{url_for('admin.delete_product', product_id=product.product_id)}}"
+                       style="text-decoration: none; color: #000000; font-family: 'LL Brown Light Web', Helvetica, sans-serif; text-transform: uppercase; font-weight: 400; font-size: 1em; letter-spacing: 0.12em; padding-top: 0">
+                        <img src="{{url_for('static', filename='remove.png')}}" height="25">
+                        delete product
+                    </a><br>
+                    <a class="btn btn-link" href="{{url_for('admin.update', product_id=product.product_id)}}"
+                       style="text-decoration: none; color: #000000; font-family: 'LL Brown Light Web', Helvetica, sans-serif; text-transform: uppercase; font-weight: 400; font-size: 1em; letter-spacing: 0.12em; padding-top: 0">
+                        <img src="{{url_for('static', filename='edit.png')}}" height="20">
+                        edit product
+                    </a>
+
+                    {% else %}
+                    <a class="btn btn-link" href="{{url_for('store.add_to_cart', product_id=product.product_id)}}"
+                       style="text-decoration: none; color: #000000; font-family: 'LL Brown Light Web', Helvetica, sans-serif; text-transform: uppercase; font-weight: 600; font-size: 1em; letter-spacing: 0.12em; padding-top: 0">
+                        + add to cart
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+    </div>
+
+</div>
+{% endblock %}

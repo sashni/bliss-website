@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+{% if current_user.is_authenticated %}
+<h4> Register an admin</h4>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+    {{ form.email.label }}{{ form.email(class="form-control col-md-8") }}<br>
+    {{ form.password.label }}{{ form.password(class="form-control col-md-8") }}<br>
+    {{ form.submit(class="btn btn-secondary") }}
+    </div>
+</form>
+{% else %}
+<h4>Admin Login</h4>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+    {{ form.email.label }}{{ form.email(class="form-control col-md-8") }}<br>
+    {{ form.password.label }}{{ form.password(class="form-control col-md-8") }}<br>
+    {{ form.submit(class="btn btn-secondary") }}
+    </div>
+</form>
+{% endif %}
+</div>
+{% endblock %}

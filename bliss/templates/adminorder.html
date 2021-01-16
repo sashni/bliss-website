@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+<form method="POST">
+<div class="container">
+  <a class="btn btn-link" href="{{url_for('admin.list')}}"
+    style="text-decoration: none; color: #000000; font-family: 'LL Brown Light Web', Helvetica, sans-serif; text-transform: lowercase; font-weight: 400; font-size: 1.5em; letter-spacing: 0.12em; padding-top: 0">
+    << Manage Products
+  </a><br><hr>
+
+  {% for order in orders %}
+    <h5>Order ID: {{order.order_id}}</h5>
+    <h5>Date: {{order.date}}</h5>
+    <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#customerInfo">View Customer Information</button>
+    {% for item in order.items%}
+      {{item.product_id}} {{item.quantity}}
+    {% endfor %}
+  {% endfor %}
+</div>
+</form>
+
+<div class="modal" id="customerInfo" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Customer Information</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-group container">
+          <div class="form-group" id="customerData"></div>
+
+          <script>
+            let customerData = document.getElementById('customerData');
+            function getCustomerInfo() => {
+              fetch('/customer/' +  {{order.customer_email}}).then((response) => {
+                response.json().then((data) => {
+                  let customerDataHTML = "";
+                  customerDataHTML += "<p>" + data.customer.first + " " data.customer.last + "</p>";
+                  customerDataHTML += "<p>" + data.customer.email + "</p>";
+                  customerDataHTML += "<p>" + data.customer.phone + "</p>";
+                  customerData.innerHTML = customerDataHTML;
+                });
+              });
+            };
+          </script>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

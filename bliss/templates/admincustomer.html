@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+    <a class="btn btn-link" href="{{url_for('admin.list')}}"
+       style="text-decoration: none; color: #000000; font-family: 'LL Brown Light Web', Helvetica, sans-serif; text-transform: lowercase; font-weight: 400; font-size: 1.5em; letter-spacing: 0.12em; padding-top: 0">
+        << Manage products
+    </a><br><hr>
+    <h5>Customer:</h5>
+    <div style="font-size: 1.0rem">
+        {{customer.first}} {{customer.last}}<br>
+        {{customer.email}}<br>
+        {{customer.phone}}
+    </div><br>
+    <h5 class="mt-0">Past Orders</h5>
+    {% for order in customer.orders%}
+    <div class="row">
+        <div class="col-md-4" style="background-color:#4045o2">
+          <p style="letter-spacing: 0.5px">Order ID: {{order.order_id}}<br>
+          Order date: {{order.date}}<br>
+          Order completed: <b>{{"Yes" if order.complete else "No"}}</b></p>
+        </div>
+        <div class="col-md-4" style="background-color:#4045o2">
+          <a href={{url_for('admin.view_order', order_id=order.order_id)}}>View Order</a>
+        </div>
+    </div>
+    {% endfor %}
+</div
+{% endblock %}

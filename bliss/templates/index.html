@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div id="carouselCaptions" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+        <li data-target="#carouselCaptions" data-slide-to="0" class="active"></li>
+        <li data-target="#carouselCaptions" data-slide-to="1"></li>
+    </ol>
+    <div class="carousel-inner">
+        <a class="carousel-item active"  href="{{url_for('store.products', filter='women-scarves')}}">
+            <img src="{{url_for('static', filename='homepage/img1.jpg')}}" height="400vw" class="d-block w-100" alt="...">
+            <div class="carousel-caption d-none d-md-block">
+                <h1 style="font-size: 70px">Scarves</h1>
+                <h5>Scarves description text here</h5>
+            </div>
+        </a>
+        <a class="carousel-item"  href="{{url_for('store.products', filter='women-shawls')}}">
+            <img src="{{url_for('static', filename='homepage/img2.jpg')}}" height="400vw" class="d-block w-100" alt="...">
+            <div class="carousel-caption d-none d-md-block">
+                <h1 style="font-size: 70px">Shawls</h1>
+                <h5>Shawls description text here</h5>
+            </div>
+        </a>
+    </div>
+</div>
+<div class="container" style="padding-top: 3vw">
+    <div class="row">
+        <div class="col">
+            <a class="card bg-dark text-white" href="{{url_for('store.products', filter='women-leisurewear')}}">
+                <img src="{{url_for('static', filename='homepage/img4.jpg')}}" style="opacity:50%" height="500vw" width="500vw" class="card-img" alt="...">
+                <div class="card-img-overlay" style="margin-top: 16vw; margin-left: 2vw">
+                    <h1 class="card-title" style="text-align:center">Women's Leisurewear</h1>
+                </div>
+            </a>
+
+        </div>
+        <div class="col">
+            <a class="card bg-dark text-white" href="{{url_for('store.products', filter='men-leisurewear')}}">
+                <img src="{{url_for('static', filename='homepage/img4.jpg')}}" style="opacity:50%" height="500vw" width="500vw" class="card-img" alt="...">
+                <div class="card-img-overlay" style="margin-top: 16vw; margin-left: 3vw">
+                    <h1 class="card-title" style="text-align: center">Men's Leisurewear</h1>
+                </div>
+            </a>
+        </div>
+    </div>
+
+
+{% endblock %}

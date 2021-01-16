@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h3 style="margin-left: 1vw">Place an Order</h3>
+    <span style="padding-bottom: 5vw"></span>
+<form method="POST" class="form-inline">
+    {{ form.hidden_tag() }}
+    <ul style="padding-top: 2vw">
+        {% for m in get_flashed_messages() %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <button type="button" class="fade close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            Thank you for your inquiry, we will contact you about your order at: <strong>{{m}}</strong>.
+        </div>
+        {% endfor %}
+        {% if not products %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <button type="button" class="fade close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            No items in cart
+        </div>
+        {% endif %}
+        {% for p,q in products.items()%}
+        <div class="row">
+        <div class="col-md-8">
+        <div class="media">
+            <img src="data:image/jpeg;base64,{{ product.img_path | safe }}" class="mr-3" alt="..." height="100">
+            <div class="media-body">
+                <h5 class="mt-0">{{p.name}}</h5>
+                <p style="letter-spacing: 0.5px">{{p.price}}KSh</p>
+                <p style="letter-spacing: 0.5px">{{p.desc}}</p>
+            </div>
+        </div><br>
+        </div>
+
+        <div class="col-md-4" style="padding-left: 6vw">
+            <div class="input-group">
+            <a class="btn btn-link" href="{{url_for('store.remove_from_cart', product_id=p.product_id)}}" style="text-decoration: none; color: #000000; font-family: 'LL Brown Light Web', Helvetica,
+             sans-serif; text-transform: uppercase; font-weight: 400; font-size: 0.8em; letter-spacing: 0.12em; padding-top: 0">
+             <img src="{{url_for('static', filename='remove.png')}}">  Remove</a><br>
+            </div>
+            <div class="input-group">
+            <input type="text" name="quantity" value={{q}} id="quant" class="col-md-4" aria-describedby="productQuantity">
+
+                <label for="quant" style="text-decoration: none; color: #000000; font-family: 'LL Brown Light Web', Helvetica,
+            sans-serif; text-transform: uppercase; font-weight: 400; font-size: 0.8em; letter-spacing: 0.12em; padding-left: 6px">
+                Quantity
+            </label>
+            </div>
+        </div>
+        </div>
+        {% endfor %}
+    </ul>
+
+    <div class="container">
+        <div class="form-group">
+            {{ form.first.label }}<span style="padding-right: 6px"></span>{{ form.first(class='form-control col-md-3') }}
+        </div><br>
+        <div class="form-group">
+            {{ form.last.label }}<span style="padding-right: 6px"></span>{{ form.last(class='form-control col-md-3')  }}
+        </div>
+        <br>
+
+        <div class="form-group">
+            {{ form.email.label }}<span style="padding-right: 40px"></span>{{ form.email(class='form-control col-md-3') }}
+        </div><br>
+
+        <div class="input-group mb-3" style='padding-left: 8px'>
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">+254</span>
+            </div>
+            {{ form.phone(class='form-control col-md-3', placeholder="Phone number: ") }}
+        </div>
+
+        <div class="form-group">
+            <span style="padding-right: 40px"></span>
+        </div>
+        Enter message/note about order:
+        <div class="form-group">
+        {{form.message(class='form-control col-md-5', style='padding-bottom: 6vw')}}
+        </div>
+    <br>
+    {{ form.submit(class='btn btn-secondary') }}
+<br><br><br>
+    </div>
+</form>
+</div>
+
+{% endblock %}

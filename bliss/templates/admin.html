@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+{% block content %}
+
+<form method="POST">
+<div class="container">
+<!-- Button trigger modal -->
+  <nav class="navbar">
+    <div class="input-group col-md-9">
+      {{ orderform.order_id(class="form-control", placeholder="Order ID") }}
+      {{ orderform.customer_email(class="form-control", placeholder="Customer email") }}
+      {{ orderform.getorder(class="btn btn-dark") }}
+    </div>
+    <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#addProduct">Add Product</button>
+    <a type="button" class="btn btn-primary" href="{{url_for('admin.logout')}}">Logout</a>
+  </nav>
+  {% for m in get_flashed_messages() %}
+    <div class="alert alert-danger alert-dismissible fade show col-md-4 container" role="alert">
+      <button type="button" class="fade close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{m}}
+    </div>
+  {% endfor %}
+</div><br>
+
+<!-- Table of Products -->
+<div class="container">
+  <h4>Womens</h4>
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">Product ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">Image</th>
+      <th scope="col">Category</th>
+      <th scope="col">Price</th>
+      <th scope="col">Availability</th>
+      <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for product in womens%}
+      <tr>
+        <th scope="row">{{product.product_id}}</th>
+        <td>{{product.name}}</td>
+        <td>
+           <img src="data:image/jpeg;base64,{{ product.img | safe }}" class="img-thumbnail" style="height: 50px; width: 50px" alt="Image unavailable">
+        </td>
+        <td>{{product.category[0].upper() + product.category[1:]}}</td>
+        <td>{{product.price}} KSh</td>
+        <td>
+          {% if product.active %}
+            <p style="color: #117700; font-size:1rem; letter-spacing: 0.5px">in stock</p>
+          {% else %}
+            <p style="color:#117700; font-size: 1rem; letter-spacing: 0.5px">out of stock</p>
+          {% endif %}
+        </td>
+        <td>
+          <a class="nav-link" href="{{ url_for('admin.delete', pid=product.product_id) }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M3 6l3 18h12l3-18h-18zm19-4v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.316c0 .901.73 2 1.631 2h5.711z"/></svg>
+          </a>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<br><br><br>
+<div class="container">
+  <h4>Mens</h4>
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">Product ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">Image</th>
+      <th scope="col">Category</th>
+      <th scope="col">Price</th>
+      <th scope="col">Availability</th>
+      <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+      {% for product in mens%}
+      <tr>
+        <th scope="row">{{product.product_id}}</th>
+        <td>{{product.name}}</td>
+        <td>
+           <img src="data:image/jpeg;base64,{{ product.img | safe }}" class="img-thumbnail" style="height: 50px; width: 50px" alt="Image unavailable">
+        </td>
+        <td>{{product.category}}</td>
+        <td>{{product.price}} KSh</td>
+        <td>
+          {% if product.active %}
+            <p style="color: #117700; font-size:1rem; letter-spacing: 0.5px">in stock</p>
+          {% else %}
+            <p style="color:#117700; font-size: 1rem; letter-spacing: 0.5px">out of stock</p>
+          {% endif %}
+        </td>
+        <td>
+          <a class="nav-link" href="{{ url_for('admin.delete', pid=product.product_id) }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M3 6l3 18h12l3-18h-18zm19-4v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.316c0 .901.73 2 1.631 2h5.711z"/></svg>
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</form>
+
+<!-- Add Product Form -->
+<form id="addForm" method="POST" enctype="multipart/form-data">
+<div class="modal" id="addProduct" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h5 class="modal-title">Add Product</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+
+      <div class="modal-body">
+        {{ addform.hidden_tag() }}
+        <div class="form-group container">
+          <div class="form-group">
+              {{addform.gender.label}}{{addform.gender(class='form-control', id='gender')}}<br>
+              {{addform.category.label}}{{addform.category(class='form-control', id='category')}}
+              <input type="hidden" name="otherCategory" id="otherCategory" placeholder="New Category" class="form-control"><br>
+
+              {{ addform.name.label }}{{ addform.name(class='form-control') }}<br>
+              {{ addform.desc.label }}{{ addform.desc(class='form-control') }}<br>
+              {{ addform.img(class='form-control-file') }}<br>
+              {{ addform.price.label }}
+              <div class="input-group">
+                {{ addform.price(class='form-control col-md-4', type='text') }}
+                <div class="input-group-append">
+                  <span class="input-group-text">KSh/item</span>
+                </div>
+              </div><br>
+              <div class="form-check">
+                {{ addform.active(type='checkbox', class='form-check-input') }}
+                {{ addform.active.label(class='form-check-label') }}
+              </div>
+          </div>
+
+          <script>
+            let gender_select = document.getElementById('gender');
+            let category_select = document.getElementById('category');
+            let other_category = document.getElementById('otherCategory');
+
+            gender_select.onchange = () => {
+              fetch('/categories/' + gender_select.value).then((response) => {
+                response.json().then((data) => {
+                  let categories = data.categories;
+                  let categoriesHTML = "";
+                  categories.push('other');
+                  categories.forEach((category) => {
+                    categoriesHTML += "<option value='" + category + "'>" + category[0].toUpperCase() + category.slice(1) + "</option>";
+                  });
+                  category_select.innerHTML = categoriesHTML;
+                  if (category_select.value === 'other') {
+                    other_category.type="text";
+                  } else {
+                    other_category.type = "hidden";
+                  }
+                })
+              });
+            };
+          </script>
+        </div>
+      </div>
+      <div class="modal-footer">
+          {{ addform.addproduct(class='btn btn-dark') }}
+      </div>
+    </div>
+  </div>
+</div>
+</form>
+
+{% endblock %}
